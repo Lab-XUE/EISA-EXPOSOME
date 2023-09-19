@@ -18,7 +18,7 @@ We also provide the compiled T3DB database file in .xlsx format.
 
 # Shiny
 We provide a Rshiny program for EISA-EXPOSOME, which runs with the interface shown below, and you can filter the results according to the visualisation interface！
-![enter image description here](https://github.com/Lab-XUE/EISA-EXPOSOME/blob/main/Figure/shiny.tif)
+![enter image description here](https://github.com/Lab-XUE/EISA-EXPOSOME/blob/main/Figure/shiny.png)
 
 
 # Literature related to EISA technology
