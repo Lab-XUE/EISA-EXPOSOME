@@ -672,8 +672,8 @@ ploteics <- function(rawData,Output_table,dbFile,rt_tol,mz_tol){
         #ggforce::facet_zoom(y = intens < median(result$intensity_exp),zoom.size = 1) +
         theme_minimal()
       #ms/ms
-      p2 <- ggplot(data=msms,mapping=aes(x=mz,y=int))+
-        xlim(10,max(msms$mz)+5)+
+     p2 <- ggplot(data=msms,mapping=aes(x=mz,y=int))+
+        xlim(10,max(msms$mz))+
         ylim(-106,106)+
         geom_hline(yintercept = 0, color = "black", linewidth = 0.5) + # add y=0
         geom_point(aes(color = msms$msms_type), size = 1) +
@@ -691,9 +691,10 @@ ploteics <- function(rawData,Output_table,dbFile,rt_tol,mz_tol){
         theme_bw(base_size = 20,)+
         theme(legend.position = "none")+
         scale_color_manual(values = c("#E41A1C","#377EB8"))+
-        annotate("text",x= 25,y= -93,label="Reference",colour="#377EB8",size = 6)+
+        annotate("text",x= 25,y= -105,label="Reference",colour="#377EB8",size = 6)+
         annotate("text",x= 25,y= 105,label="Experimental",colour="#E41A1C",size = 6)+
-        annotate("text",x= 25,y= 93,label=paste0("MFR:",unique(data2$MFR)),colour="black",size = 5)
+        annotate("text",x= 25,y= 93,label=paste0("MFR:",unique(data2$MFR)),colour="black",size = 5)+
+        annotate("text",x= 25,y= -93,label=paste0("SSM:",unique(data2$SSM)),colour="black",size = 5)
       (p0+p1)/p2
       ggsave(paste0("./EISA-EXPOSOME-plotEICs/",unique(data$name),"-",data2$mz_exp[1],"-",i,".pdf"),width = 10, height = 6, dpi = 300)
     } 
