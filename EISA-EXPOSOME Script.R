@@ -673,16 +673,27 @@ ploteics <- function(rawData,Output_table,dbFile,rt_tol,mz_tol){
         theme_minimal()
       #ms/ms
       p2 <- ggplot(data=msms,mapping=aes(x=mz,y=int))+
-        ylim(-100,100)+
-        geom_hline(yintercept = 0, color = "black", linewidth = 1) + 
-        geom_point(aes(color = msms_type), size = 1) +         
-        geom_bar(aes(fill = msms_type), stat="identity", width=0.2)+
-        labs(x = "mz",y = "Intensity",title = "Mass spectra of matched fragment ions")+
-        theme_bw(base_family = "Times") +
-        #geom_text(aes(label = round(mz,4), vjust = -0.5, hjust = 0.5), show.legend = TRUE)+
-        annotate("text", label = paste0("  MFR : ",unique(data2$MFR),"  SSM : ",unique(data2$SSM),
-                                        "  W_score : ",unique(data2$weigthed_score), "  type : ",unique(data2$type)),
-                 x=min(mz_lib)+20,y = 90, size = 4, colour = "red")
+        xlim(10,max(msms$mz)+5)+
+        ylim(-106,106)+
+        geom_hline(yintercept = 0, color = "black", linewidth = 0.5) + # add y=0
+        geom_point(aes(color = msms$msms_type), size = 1) +
+        geom_segment(aes(xend = mz, yend = 0,colour = msms_type), linewidth = 1.2, lineend = "butt")+
+        geom_text_repel(
+          aes(x = mz, y = int, label = round(mz,4)),
+          direction = "y",  # 主要沿y轴方向调整
+          nudge_y = ifelse(msms$int > 0, 0.5, -0.5),  # 根据y值正负调整初始偏移
+          segment.size = 0.2,
+          # segment.color = NA,
+          size = 3,
+          box.padding = 0.5  # 标签周围的填充
+        )+ 
+        labs(x = "mz",y = "Relative intensity",title = "Mass spectra of matched fragment ions")+
+        theme_bw(base_size = 20,)+
+        theme(legend.position = "none")+
+        scale_color_manual(values = c("#E41A1C","#377EB8"))+
+        annotate("text",x= 25,y= -93,label="Reference",colour="#377EB8",size = 6)+
+        annotate("text",x= 25,y= 105,label="Experimental",colour="#E41A1C",size = 6)+
+        annotate("text",x= 25,y= 93,label=paste0("MFR:",unique(data2$MFR)),colour="black",size = 5)
       (p0+p1)/p2
       ggsave(paste0("./EISA-EXPOSOME-plotEICs/",unique(data$name),"-",data2$mz_exp[1],"-",i,".pdf"),width = 10, height = 6, dpi = 300)
     } 
